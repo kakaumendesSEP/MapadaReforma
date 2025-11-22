@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mapa da Reforma</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="Base3Reforma.css">
+</head>
+<body>
+
+    <!-- Barra de busca fixa no topo -->
+    <div id="search-container" class="search-container">
+        <input type="text" id="search-input" placeholder="Digite uma palavra-chave">
+        <div id="search-results" class="search-results"></div>
+    </div>
+
+    <!-- Tela inicial (cartão de visita preservado) -->
+    <div id="initial-screen" class="initial-container">
+        <div class="initial-inner">
+            <div class="text-content">
+                <h1>MAPA DA REFORMA</h1>
+
+                <p>O Mapa da Reforma é um guia interativo criado para facilitar a compreensão das novas regras da Reforma Tributária.</p>
+
+                <p>Através de perguntas objetivas, ele ajuda a identificar rapidamente o tratamento tributário correto para cada operação</p>
+
+                <p>Cada etapa apresenta explicações simples, exemplos práticos e trechos da Lei Complementar 214/2025, tornando a análise fiscal mais clara, rápida e confiável.</p>
+
+                <p>Explore o fluxo e descubra, de forma intuitiva, como aplicar IBS, CBS, Imposto Seletivo e demais regras na prática.</p>
+
+                <div class="controls">
+                    <button id="start-button" class="primary-btn">Iniciar Consulta</button>
+                </div>
+            </div>
+
+            <div class="initial-image" aria-hidden="true">
+                <!-- opcional: coloque img/capa.png aqui -->
+                <img src="planta-reforma.jpeg" alt="Planta da Reforma" onerror="this.style.display='none'">
+            </div>
+        </div>
+    </div>
+
+    <!-- Container que receberá os cards gerados a partir do JSON -->
+    <main id="app" class="app-screen" aria-live="polite">
+        <div id="diagram-container" class="diagram-container"></div>
+    </main>
+
+    <!-- Footer preservado -->
+    <footer>
+        <p>Desenvolvido por <strong>Kauane Mendes</strong></p>
+        <a href="https://www.linkedin.com/in/kauanemendesdasilva" target="_blank" rel="noopener noreferrer">Linkedin</a>
+    </footer>
+
+    <script src="Base2Reforma.js" defer></script>
+</body>
+</html>

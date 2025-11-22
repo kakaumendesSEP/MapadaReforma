@@ -1,0 +1,158 @@
+[
+    {
+        "id": "tipo_documento",
+        "question": "Qual é o documento que estamos tratando?",
+        "explanation": "O tipo de documento determina o caminho tributário a ser seguido, pois cada documento possui regras específicas de incidência, apuração e registro dos tributos. Por exemplo, notas fiscais de produtos (NF-e) estão sujeitas à apuração de IBS/ICMS sobre mercadorias, enquanto notas de serviço (NFS-e) são relevantes para ISS ou outros tributos de serviço. Faturas ou notas de débito podem representar operações diversas, como ajustes ou cobranças, e exigem atenção específica quanto à tributação",
+        "options": [
+            { "text": "Nota Fiscal de Produto (NF-e)", "target": "operacao_onerosa" },
+            { "text": "Nota Fiscal de Serviço (NFS-e)", "target": "nfs_simples_nacional" },
+            { "text": "Fatura / Nota de Débito", "target": "fatura_financeira_final" }
+        ]
+    },
+    {
+        "id": "operacao_onerosa",
+        "question": "A operação envolve pagamento ou contraprestação financeira (é onerosa)?",
+        "explanation": "Operações onerosas são aquelas em que há uma contraprestação financeira, ou seja, o comprador paga um preço pelo bem ou serviço. Se não houver pagamento, a operação é considerada gratuita e pode gerar implicações diferentes, como a incidência do Imposto Seletivo ou necessidade de estorno de créditos fiscais. Avalie sempre se houve transferência de valor econômico em troca do bem ou serviço.",
+        "legalBasis": "Art. 412, III; Arts. 13 e 14 da LC 214/2025.",
+        "example": "Venda de mercadoria → operação onerosa; Doação de brinde ou amostra → operação não onerosa; Transferência de estoque entre filiais sem cobrança → operação não onerosa.",
+        "yesTarget": "nfp_simples_nacional",
+        "noTarget": "operacao_doacao"
+    },
+    {
+        "id": "operacao_doacao",
+        "question": "A operação consiste em doação, brinde ou entrega gratuita de produtos ou serviços?",
+        "explanation": "Operações gratuitas são aquelas em que não há contraprestação financeira, como doações, brindes, amostras ou transferências sem cobrança. Apesar de não gerar receita, essas operações podem ter implicações fiscais, como a incidência do Imposto Seletivo (IS) ou necessidade de estorno de créditos do IBS/ICMS. É importante analisar se o benefício dado ao destinatário gera impacto tributário, mesmo sem pagamento.",
+        "legalBasis": "Art. 412, III; Art. 414, III, a.",
+        "example": "Distribuição de bebidas ou alimentos gratuitamente → pode gerar IS; Brinde promocional a cliente → pode exigir estorno de crédito; Transferência de produtos entre filiais sem cobrança → operação gratuita.",
+        "yesTarget": "doacao_imposto_seletivo",
+        "noTarget": "operacao_nao_onerosa_outra"
+    },
+    {
+        "id": "doacao_imposto_seletivo",
+        "question": "O item doado está listado no Anexo XVII da LC 214/2025 (Imposto Seletivo)??",
+        "explanation": "O Imposto Seletivo (IS) incide sobre produtos prejudiciais à saúde ou ao meio ambiente, como bebidas alcoólicas, refrigerantes açucarados, cigarros e derivados de tabaco, mesmo quando a operação é gratuita. Se o item doado estiver listado no Anexo XVII, o IS deve ser recolhido ou apropriado conforme a legislação, podendo haver necessidade de estorno de créditos se houver operação sem pagamento.",
+        "tags": ["imposto seletivo", "is", "anexo xvii", "doação", "brinde", "saúde", "meio ambiente"],
+        "legalBasis": "Arts. 409 a 417 da LC 214/2025; Anexo XVII",
+        "example": "Doação de refrigerante açucarado ou bebidas alcoólicas → operação sujeita a IS; Brinde de cigarros ou derivados de tabaco → recolhimento do IS obrigatório.",
+        "yesTarget": "final_doacao_com_is",
+        "noTarget": "final_doacao_sem_is"
+    },
+    {
+        "id": "operacao_nao_onerosa_outra",
+        "question": "A operação é outra operação sem pagamento?",
+        "explanation": "Operações sem pagamento são aquelas em que não há transferência de valor financeiro, como comodato, empréstimos gratuitos ou cessão de uso. Essas operações geralmente não geram IBS/CBS, mas podem ter outras implicações fiscais, como estorno de créditos ou verificação de incidência de Imposto Seletivo (IS) caso envolvam produtos listados nos anexos específicos. É importante registrar corretamente a operação para controle fiscal.",
+        "legalBasis": "Art. 13 da LC 214/2025.",
+        "example": "Comodato de máquina ou equipamento entre empresas → não há IBS/CBS; Empréstimo de software sem cobrança → operação sem pagamento.",
+        "yesTarget": "final_fora_ibs_cbs",
+        "noTarget": "final_fora_ibs_cbs"
+    },
+    {
+        "id": "nfp_simples_nacional",
+        "question": "A empresa remetente está no Simples Nacional?",
+        "tags": ["simples", "das", "icms", "iss", "ibs", "cbs", "unificado"],
+        "explanation": "Empresas optantes pelo Simples Nacional continuam recolhendo seus tributos por meio do Documento de Arrecadação do Simples (DAS). \n\nIsso significa que tanto: o ISS (atualmente incidente sobre serviços), quanto o IBS (Imposto sobre Bens e Serviços, que substituirá ISS e ICMS no modelo futuro),ficarão consolidados dentro do DAS, conforme previsto na EC 132/2023 e detalhado pela Lei Complementar 214/2025. \n\nA regra geral é que o Simples não será obrigado a adotar o novo sistema de apuração não cumulativa do IBS/CBS, exceto em situações específicas como:créditos de IBS/CBS tomados por clientes fora do Simples,operações interestaduais,emissão de documento fiscal para destacar alíquota específica, quando exigido. \n\nA LC 214/2025 reforça que os optantes do Simples poderão escolher destacar o IBS/CBS na nota para permitir crédito a seus tomadores, sem perder a sistemática do Simples, mantendo o recolhimento unificado.",
+        "yesTarget": "nfp_simples_final",
+        "noTarget": "nfp_classificacao_artigos"
+    },
+    {
+        "id": "nfp_simples_final",
+        "finalText": "Regime Simples Nacional para Nota fiscal de Produto",
+        "explanation": "No regime do Simples Nacional, o ICMS é recolhido dentro do DAS (Documento de Arrecadação do Simples), sem destaque separado.\n\nReforma Tributária (LC 214/2025): Com a unificação do IBS e a manutenção do IS, esses tributos também serão recolhidos de forma consolidada dentro do DAS unificado, simplificando o processo e evitando a necessidade de apuração separada. Essa mudança facilita o cumprimento das obrigações fiscais para pequenas empresas.\n\nRecomendação: Para produtos enquadrados no Simples Nacional, continue recolhendo os tributos pelo DAS unificado conforme os anexos e regras da LC 214/2025.",
+        "legalBasis": "Art. 13, 14 e 412 da LC 214/2025; Art. 18 a 23 da Lei Complementar 123/2006 (Simples Nacional)."
+    },
+    {
+    "id": "nfp_produto_nao_localizado",
+    "finalText": "Produto não localizado em nenhum anexo",
+    "explanation": "Como o produto não foi localizado em nenhum anexo da LC 214/2025, aplica-se a alíquota padrão do IBS/CBS, sem deduções ou benefícios adicionais.\n\nObservações sobre a nota fiscal:\n- Na NF-e ou nota fiscal de serviço, o IBS/CBS não aparecerá destacado, pois será apurado de forma consolidada pelo emissor.\n- Para garantir que a alíquota aplicada está correta, verifique o código do produto (NCM) e confirme que ele não consta em nenhum anexo que prevê redução ou isenção.\n- Mantenha registro da nota fiscal e da análise realizada, pois isso assegura conformidade legal e transparência em auditorias fiscais.\n- A alíquota padrão aplica-se integralmente e deve ser usada em cálculos e lançamentos contábeis do IBS/CBS.",
+    "legalBasis": "LC 214/2025, Anexos I a XVII; NCM conforme tabela oficial.",
+    "example": "Equipamento eletrônico genérico (ex.: teclado ou mouse de informática) → não consta em nenhum anexo da LC 214/2025, portanto aplica-se a alíquota padrão do IBS/CBS, sem qualquer redução ou benefício fiscal."
+    },
+    {
+    "id": "nfp_classificacao_artigos",
+    "question": "Esse produto faz parte de algum dos anexos previstos na LC 214/2025?",
+    "explanation": "Na LC 214/2025, os produtos e serviços podem ter alíquotas do IBS/CBS reduzidas ou zeradas, dependendo do anexo em que se enquadram: \n\nAnexo I: alimentos em geral → isenção (0%). \nAnexos II e III: serviços de educação e saúde → redução de 60%.\nAnexos IV, V, VI, VII: dispositivos médicos, acessibilidade, fórmulas especiais, alguns alimentos → redução de 60%. \nAnexo VIII: produtos de higiene e limpeza para famílias de baixa renda → redução de 60%. \nAnexos IX e X: insumos agropecuários e serviços culturais → redução de 60%. \nAnexos XI a XIII: bens e serviços estratégicos, segurança e acessibilidade → redução de 60% ou isenção para itens específicos. \nAnexo XIV: medicamentos → isenção (0%). \nAnexo XV: hortícolas, frutas e ovos → isenção total.\nAnexos XVI e XVII: regras técnicas de cálculo de alíquotas e imposto seletivo.",
+    "options": [
+        { "text": "Localizei o produto em um dos anexos da lei", "target": "nfp_produto_localizado" },
+        { "text": "Não localizei o produto dentro de qualquer um dos anexos", "target": "nfp_produto_nao_localizado" }
+    ],
+    "link": {
+        "text": "Consultar LC 214/2025 completa",
+        "url": "https://www.planalto.gov.br/ccivil_03/leis/lcp/Lcp214.htm",
+        "target": "_blank"
+    }
+}
+,
+    {
+        "id": "nfp_produto_localizado",
+        "finalText": "Produto localizado em um dos anexos da LC 214/2025.",
+        "explanation": "Como o produto foi localizado em um dos anexos da LC 214/2025, aplique a dedução ou redução da alíquota do IBS/CBS conforme o anexo correspondente. Cada anexo define categorias específicas de produtos e a respectiva redução ou isenção, podendo variar de 60% até 100% (isenção total).\n\nObservações sobre a nota fiscal:\n- Na NF-e ou nota fiscal de serviço, o IBS/CBS não aparecerá destacado, pois será apurado de forma consolidada pelo emissor, mesmo que haja redução prevista.\n- Para conferir se a redução está correta, verifique o código do produto (NCM) e o anexo correspondente da LC 214/2025.\n- Utilize a lista oficial de anexos e a classificação correta do produto para garantir que a alíquota aplicada esteja de acordo com a legislação.\n- Mantenha registro da nota fiscal e da consulta ao anexo, pois isso garante transparência e respaldo em auditorias fiscais.",
+        "legalBasis":"LC 214/2025, Anexos I a III; NCM conforme tabela oficial.",
+        "example": "Produto enquadrado no Anexo I (alimentos em geral) → isenção total de IBS/CBS; Produto enquadrado no Anexo II (serviços de educação) → redução de 60% da alíquota."
+    },
+    {
+        "id": "nfs_simples_nacional",
+        "question": "A empresa remetente está no Simples Nacional?",
+        "explanation": "Empresas optantes pelo Simples Nacional continuam recolhendo seus tributos por meio do Documento de Arrecadação do Simples (DAS). \n\nIsso significa que tanto: o ISS (atualmente incidente sobre serviços), quanto o IBS (Imposto sobre Bens e Serviços, que substituirá ISS e ICMS no modelo futuro),ficarão consolidados dentro do DAS, conforme previsto na EC 132/2023 e detalhado pela Lei Complementar 214/2025. \n\nA regra geral é que o Simples não será obrigado a adotar o novo sistema de apuração não cumulativa do IBS/CBS, exceto em situações específicas como:créditos de IBS/CBS tomados por clientes fora do Simples,operações interestaduais,emissão de documento fiscal para destacar alíquota específica, quando exigido. \n\nA LC 214/2025 reforça que os optantes do Simples poderão escolher destacar o IBS/CBS na nota para permitir crédito a seus tomadores, sem perder a sistemática do Simples, mantendo o recolhimento unificado.",
+        "yesTarget": "nfs_simples_final",
+        "noTarget": "nfs_servico_listado"
+    },
+    {
+        "id": "nfs_simples_final",
+        "finalText": "Regime Simples Nacional para Nota fiscal de Serviço",
+        "explanation": "No regime do Simples Nacional, o ISS sobre serviços é recolhido dentro do DAS (Documento de Arrecadação do Simples), sem destaque separado. Para empresas com empregados, a contribuição patronal do INSS também é incluída no DAS.\n\nReforma Tributária (LC 214/2025): Com a unificação do IBS e a criação da CBS, esses tributos serão recolhidos de forma consolidada dentro do DAS unificado, simplificando o processo e evitando a apuração separada. Pequenas empresas poderão continuar cumprindo suas obrigações fiscais de forma simplificada.\n\nRecomendação: Para serviços prestados por empresas enquadradas no Simples Nacional, continue recolhendo os tributos pelo DAS unificado, observando as regras dos anexos da LC 214/2025.\n\nBase legal\nArt. 13, 14 e 412 da LC 214/2025; Art. 18 a 23 da Lei Complementar 123/2006 (Simples Nacional)."
+    },
+    {
+        "id": "nfs_servico_listado",
+        "question": "O serviço prestado está listado em algum dos anexos da LC 214/2025 (Anexo I, II ou III) que prevê redução de alíquota?",
+        "explanation": "Para identificar se o serviço se enquadra em algum anexo com redução de alíquota, utilize como referência o Código de Serviços da Lei 116/2003 (Lei Complementar do ISS). Os anexos da LC 214/2025 contemplam determinados serviços que podem ter alíquota reduzida ou isenção parcial do IBS/CBS no futuro. Verifique o item de serviço correspondente na NFSe e compare com a lista de serviços dos anexos I, II e III para determinar se há benefício fiscal aplicável.",
+        "legalBasis": "Lei Complementar 116/2003 (ISS), LC 214/2025, Anexos I a III.",
+        "options": [
+            { "text": "Localizei o serviço em um dos anexos da lei", "target": "nfs_listado_final" },
+            { "text": "Não localizei o serviço dentro de qualquer um dos anexos", "target": "nfs_nao_listado_final" }
+        ],
+        "link": {
+            "text": "Consultar LC 214/2025 completa",
+            "url": "https://www.planalto.gov.br/ccivil_03/leis/lcp/Lcp214.htm",
+            "target": "_blank"
+        }
+    },
+    {
+        "id": "nfs_listado_final",
+        "finalText": "Serviço Listado em Anexo I a III",
+        "explanation": "ISS devido conforme regras municipais.\n\nReforma Tributária (LC 214/2025): Como o serviço está listado em um dos anexos que prevê redução de alíquota, pode haver aplicação de redução do IBS e da CBS. Observação importante: os tributos IBS e CBS não aparecerão destacados na NFSe, pois sua apuração será feita de forma consolidada pelo prestador, mesmo que haja redução prevista nos anexos. Avalie o anexo correspondente para verificar a porcentagem de redução ou benefício fiscal aplicável.",
+        "legalBasis": "Lei Complementar 116/2003 (ISS); LC 214/2025, Anexos I a III."
+    },
+    {
+        "id": "nfs_nao_listado_final",
+        "finalText": "Serviço não listado em nenhum anexo",
+        "explanation": "ISS devido conforme regras municipais.\n\nReforma Tributária (LC 214/2025): Como o serviço não está listado em nenhum anexo com redução de alíquota, aplica-se a alíquota padrão do IBS e da CBS. Atenção: os tributos IBS e CBS não aparecerão destacados na NFSe, pois sua apuração será consolidada pelo prestador, independentemente de haver ou não redução prevista. Para serviços não contemplados, a alíquota padrão se aplica integralmente.",
+        "legalBasis": "Lei Complementar 116/2003 (ISS); LC 214/2025, Anexos I a III."
+    },
+    {
+        "id": "fatura_financeira_final",
+        "finalText": "Fatura Financeira",
+        "explanation": "Nas faturas ou notas de débito financeiras, pode haver incidência de IOF (Imposto sobre Operações Financeiras), conforme regras vigentes.\n\nReforma Tributária (LC 214/2025): Operações financeiras não estão sujeitas ao IBS, pois este incide sobre bens e serviços. No entanto, deve-se avaliar a aplicação do Imposto Seletivo em operações específicas, como aquelas envolvendo crédito ou produtos financeiros com tributação diferenciada. Além disso, a nova legislação prevê que, futuramente, o IBS/CBS será consolidado e não aparecerá destacado na fatura, simplificando a apuração do tributo pelo prestador ou instituição financeira.",
+        "legalBasis": "Lei Complementar 214/2025; Instruções da Receita Federal sobre IOF e Imposto Seletivo."
+    },
+    {
+        "id": "final_fora_ibs_cbs",
+        "finalText": "Conclusão: Operação fora do campo do IBS/CBS.",
+        "explanation": "A operação não envolve pagamento ou contraprestação financeira, como transferências internas, comodato, empréstimos gratuitos ou cessão de uso. Por se tratar de outras operações sem preço, não há incidência de IBS/CBS. É importante registrar corretamente a operação para controle fiscal e eventual comprovação de estoque ou créditos.",
+        "legalBasis": "Não incidência",
+        "example": "Exemplo: Transferência de mercadoria entre filiais ou comodato de equipamento → não há IBS/CBS."
+    },
+    {
+        "id": "final_doacao_com_is",
+        "finalText": "Doação sujeita ao Imposto Seletivo.",
+        "explanation": "A doação envolve um item listado no Anexo XVII da LC 214/2025, sujeito ao Imposto Seletivo (IS). Mesmo sem pagamento, o IS deve ser apurado e recolhido conforme a legislação, garantindo o cumprimento das obrigações fiscais em operações gratuitas com produtos prejudiciais à saúde ou ao meio ambiente.",
+        "legalBasis": "Art. 414 da LC 214/2025; Anexo XVII.",
+        "example": "Doação de refrigerante açucarado, bebidas alcoólicas ou cigarros → recolher IS."
+    },
+    {
+        "id": "final_doacao_sem_is",
+        "finalText": "Doação sem Imposto Seletivo.",
+        "explanation": "A doação não envolve itens listados no Anexo XVII da LC 214/2025, portanto não há incidência do Imposto Seletivo (IS). Mesmo sendo uma operação gratuita, não é necessário recolher o IS, mas é importante registrar corretamente a operação para fins de controle fiscal e eventual comprovação de estoque ou crédito.",
+        "legalBasis": "Arts. 13 e 14 da LC 214/2025.",
+        "example": "Doação de cadernos, livros ou materiais escolares → sem IS."
+    }
+]

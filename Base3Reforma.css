@@ -1,0 +1,353 @@
+:root{
+    --bg: #F5E7C8;
+    --accent: #0A3550;
+    --muted: #6b6b6b;
+    --card-bg: #ffffff;
+    --radius: 12px;
+    --gap: 18px;
+    --max-width: 1100px;
+}
+
+*{box-sizing:border-box}
+html,body{
+    height:100vh;
+    margin:0;
+    padding:0;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: var(--bg);
+    color: var(--accent);
+    overflow-y: auto; /* Permite scroll vertical */
+    padding-top: 80px; /* Espaço para a barra de busca fixa */
+}
+
+/* Layout principal: agora é um fluxo vertical */
+.app-screen {
+    width: 100%;
+    display: flex;
+    flex-direction: column; /* Organiza os cards verticalmente */
+    align-items: center;
+    padding: 24px 0;
+    gap: 24px; /* Espaço entre os cards */
+}
+
+/* Tela inicial: não ocupa mais a tela inteira */
+/* interno da initial */
+.initial-inner{
+    max-width: 850px; /* Largura máxima reduzida para o card ficar mais estreito */
+    width: auto; /* Largura se ajusta ao conteúdo */
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 0 24px; /* Garante margem nas laterais e centraliza */
+    box-shadow: 0 12px 30px rgba(10,53,80,0.06);
+}
+
+/* O container inicial não precisa mais de altura fixa */
+.initial-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+/* Texto da capa */
+.text-content{
+    flex: 1 1 480px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    align-items:flex-start;
+    justify-content:center;
+}
+
+.text-content h1{
+    font-size: clamp(22px, 4.2vw, 36px);
+    margin:0;
+    letter-spacing:1px;
+    color: var(--accent);
+}
+
+.text-content p{
+    margin: 0;
+    line-height: 1.45;
+    color: rgba(10,53,80,0.9);
+}
+
+/* Image container */
+.initial-image{
+    flex: 0 0 360px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: var(--card-bg); /* Garante fundo branco também na imagem */
+}
+.initial-image img{
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(10,53,80,0.08);
+}
+
+/* controls */
+.controls{
+    margin-top: 12px;
+}
+.primary-btn{
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.primary-btn:hover{opacity:0.95}
+
+/* Diagram container (onde os cards são gerados) */
+.diagram-container{
+    width: calc(100% - 48px);
+    max-width: var(--max-width);
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Cards empilhados verticalmente */
+    align-items: center; /* Centraliza os cards */
+    gap: var(--gap); /* Espaço entre os cards */
+}
+
+/* Flow card padrão */
+.flow-card {
+    width: auto; /* Largura se ajusta ao conteúdo */
+    max-width: 650px; /* Largura máxima para o card */
+    height: auto; /* Altura se ajusta ao conteúdo */
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.98));
+    border-radius: var(--radius);
+    box-shadow: 0 12px 30px rgba(10,53,80,0.06);
+    padding: 22px;
+    display: flex; /* Sempre visível por padrão após ser adicionado */
+    flex-direction: column;
+    gap: 12px;
+    box-sizing: border-box;
+    border: 2px solid transparent; /* Borda para indicar estado */
+    transition: all 0.4s ease; /* Transição suave */
+    opacity: 0; /* Começa invisível para efeito de fade-in */
+    transform: translateY(20px); /* Começa um pouco abaixo para efeito de slide-in */
+}
+
+/* Estilo para quando o card é adicionado e se torna visível */
+.flow-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Conteúdo com scroll interno */
+.flow-card .card-body {
+    overflow-y: auto;
+    padding-right: 8px; /* espaço p/ scrollbar */
+    max-height: 300px; /* Altura máxima para o conteúdo com scroll */
+}
+
+/* Back button */
+.back-button{
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    font-weight: 600;
+    cursor: pointer;
+    align-self: flex-start;
+    display: none; /* Botão voltar não é mais necessário no novo fluxo */
+}
+
+/* Question */
+.card-question{
+    margin: 6px 0 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+/* Info blocks */
+.card-info {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.card-info h3{
+    margin: 16px 0 8px;
+    font-size: 14px;
+    color: var(--accent);
+}
+.card-info p{
+    margin:0;
+    color: var(--muted);
+    line-height:1.4;
+}
+
+/* NOVO: Estilos para o cabeçalho da explicação e o link */
+.explanation-header {
+    display: flex;
+    justify-content: space-between; /* Alinha o título à esquerda e o link à direita */
+    align-items: center; /* Alinha verticalmente */
+    margin-bottom: 8px; /* Espaço antes do parágrafo da explicação */
+}
+
+.explanation-header h3 {
+    margin: 0; /* Remove a margem padrão do h3 */
+}
+
+.card-link {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+}
+/* Actions - buttons sim / nao */
+.card-actions{
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    margin-top: 12px;
+    flex-wrap: wrap; /* Permite que os botões quebrem a linha se necessário */
+}
+.btn-yes, .btn-no, .btn-restart, .btn-option {
+    padding: 12px 24px; /* Aumenta o preenchimento para botões maiores */
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    flex: 1; /* Faz os botões ocuparem o mesmo espaço */
+    min-width: 150px; /* Largura mínima para botões */
+    text-align: center; /* Garante que o texto fique centralizado */
+    transition: all 0.2s ease; /* Adiciona uma transição suave */
+}
+.btn-yes{
+    background: var(--accent);
+    color: white;
+}
+.btn-no{
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid rgba(10,53,80,0.12);
+}
+/* Estilo para os botões de múltiplas opções */
+.btn-option {
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid rgba(10,53,80,0.12);
+}
+
+/* Estilo para o campo de input do NCM */
+.ncm-input {
+    flex-grow: 2;
+    padding: 12px 18px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    text-align: center;
+}
+
+.btn-yes:hover, .btn-no:hover, .btn-restart:hover, .btn-option:hover {
+    transform: translateY(-2px); /* Efeito de elevação ao passar o mouse */
+    opacity: 0.9;
+}
+
+/* --- NOVOS ESTILOS PARA HIERARQUIA --- */
+
+/* Card selecionado pelo usuário */
+.flow-card.selected {
+    border-color: var(--accent);
+    box-shadow: 0 8px 25px rgba(10, 53, 80, 0.15);
+}
+
+/* Card irmão que não foi selecionado */
+.flow-card.inactive-sibling {
+    background: #f0f0f0;
+    opacity: 0.7;
+}
+
+/* Estilo para o botão da escolha ativa (Sim/Não) */
+.btn-yes.active-choice, .btn-no.active-choice {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(10, 53, 80, 0.2);
+}
+
+/* Final result text styling */
+.final-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 6px;
+}
+
+/* Footer */
+footer{
+    position: relative; /* Posição relativa para ficar no final do conteúdo */
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: rgba(10,53,80,0.7);
+    font-size: 14px;
+    padding: 6px 12px;
+    pointer-events: auto;
+}
+footer a{
+    color: var(--accent);
+    font-weight:600;
+    text-decoration:none;
+}
+
+/* responsive */
+@media (max-width: 900px) {
+    .initial-inner { flex-direction: column; align-items: center; gap: 18px; }
+    .initial-image { display: none; }
+    .text-content { align-items: center; text-align: center; }
+    .diagram-container { width: calc(100% - 28px); }
+}
+
+/* --- ESTILOS PARA A BUSCA --- */
+
+.search-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--card-bg);
+    padding: 12px 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+}
+
+#search-input {
+    width: 100%;
+    max-width: 600px;
+    padding: 12px 18px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    max-width: 600px;
+    background: white;
+    border-radius: 0 0 var(--radius) var(--radius);
+    box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+    max-height: 300px;
+    overflow-y: auto;
+    display: none; /* Escondido por padrão */
+}
+
+.search-results div {
+    padding: 12px 18px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+}
+.search-results div:hover { background: #f5f5f5; }
+.search-results div:last-child { border-bottom: none; }
